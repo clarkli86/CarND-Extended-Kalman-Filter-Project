@@ -58,7 +58,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   const auto x_y_2 = sqrt(x_[0] * x_[0] + x_[1] * x_[1]);
   Hx << x_y_2,
         atan2(x_[1], x_[0]),
-        (x_[0] * x_[1] + x_[2] * x_[3]) / x_y_2;
+        (x_[0] * x_[2] + x_[1] * x_[3]) / x_y_2;
   VectorXd y = z - Hx;
 
   // H_ is the jacobian from Init
