@@ -52,6 +52,9 @@ FusionEKF::FusionEKF() {
        0, 0, 1, 0,
        0, 0, 0, 1;
 
+  H_laser_ << 1, 0, 0, 0,
+              0, 1, 0, 0;
+
   auto Q = MatrixXd(4, 4);
   Q.setZero();
 
@@ -168,8 +171,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   }
 
   // print the output
-  cout << "raw measurement = " << measurement_pack.raw_measurements_ << endl;
-  cout << "x_ = " << ekf_.x_ << endl;
-  cout << "F_ = " << ekf_.F_ << endl;
-  cout << "P_ = " << ekf_.P_ << endl;
+  //cout << "x_ = " << ekf_.x_ << endl;
+  //cout << "F_ = " << ekf_.F_ << endl;
+  //cout << "P_ = " << ekf_.P_ << endl;
 }

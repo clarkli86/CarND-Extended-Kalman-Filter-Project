@@ -1,4 +1,5 @@
 #include "kalman_filter.h"
+#include <iostream>
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -55,10 +56,17 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
    * TODO: update the state by using Extended Kalman Filter equations
    */
   VectorXd Hx(3);
-  const auto x_y_2 = sqrt(x_[0] * x_[0] + x_[1] * x_[1]);
+  const auto x_y_2 = sqrt(x_(0) * x_(0) + x_(1) * x_(1));
+
+  // check division by zero
+  if (fabs(x_y_2) < 0.0001 || fabs(x_(0)) < 0.0001) {
+    std::cerr << "CalculateJacobian () - Error - Division by Zero" << std::endl;
+    return;
+  }
+
   Hx << x_y_2,
-        atan2(x_[1], x_[0]),
-        (x_[0] * x_[2] + x_[1] * x_[3]) / x_y_2;
+        atan2(x_(1), x_(0)),
+        (x_(0) * x_(2) + x_(1) * x_(3)) / x_y_2;
   VectorXd y = z - Hx;
 
   // H_ is the jacobian from Init

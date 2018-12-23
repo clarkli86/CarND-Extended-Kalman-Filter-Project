@@ -16,6 +16,7 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
    */
   /// FIXME: deduce type from parameters
   auto rmse = VectorXd(4);
+  rmse << 0, 0, 0, 0;
   // accumulate squared residuals
   for (unsigned int i=0; i < estimations.size(); ++i) {
     VectorXd residual = estimations[i] - ground_truth[i];
@@ -53,7 +54,7 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   float c3 = (c1*c2);
 
   // check division by zero
-  if (fabs(c1) < 0.0001) {
+  if (fabs(c1) < 0.0001 || fabs(c2) < 0.0001 || fabs(c3) < 0.0001) {
     std::cerr << "CalculateJacobian () - Error - Division by Zero" << std::endl;
     return Hj;
   }
