@@ -69,6 +69,13 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
         (x_(0) * x_(2) + x_(1) * x_(3)) / x_y_2;
   VectorXd y = z - Hx;
 
+  // Limit y(1) to be within (-pi, pi)
+  {
+    const float pi = 3.1415926;
+    while (y(1) <= -pi) y(1) += 2 * pi;
+    while (y(1) >= pi)  y(1) -= 2 * pi;
+  }
+
   // H_ is the jacobian from Init
   MatrixXd Ht = H_.transpose();
   MatrixXd S = H_ * P_ * Ht + R_;
